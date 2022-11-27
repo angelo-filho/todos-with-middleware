@@ -17,7 +17,7 @@ function checksExistsUserAccount(request, response, next) {
   const user = users.find((user) => user.username === username);
 
   if (!user) {
-    return response.status(404);
+    return response.status(404).json({ error: "User doesn't exists" });
   }
 
   request.user = user;
@@ -28,8 +28,8 @@ function checksExistsUserAccount(request, response, next) {
 function checksCreateTodosUserAvailability(request, response, next) {
   const { user } = request;
 
-  if (!user.pro && user.todos.lenght === MAX_FREEPLAN_TODOS) {
-    return response.status(403);
+  if (!user.pro && user.todos.length === MAX_FREEPLAN_TODOS) {
+    return response.status(403).json({ error: "User can't make more todos" });
   }
 
   return next();
@@ -42,19 +42,19 @@ function checksTodoExists(request, response, next) {
   const user = users.find((user) => user.username === username);
 
   if (!user) {
-    return response.status(404);
+    return response.status(404).json({ error: "User doesn't exists" });
   }
 
   const validId = validate(id);
 
   if (!validId) {
-    return response.status(400);
+    return response.status(400).json({ error: "Id is not a UUID" });
   }
 
   const todo = user.todos.find((todo) => todo.id === id);
 
   if (!todo) {
-    return response.status(404);
+    return response.status(404).json({ error: "Todo doesn't exists" });
   }
 
   request.user = user;
@@ -69,7 +69,7 @@ function findUserById(request, response, next) {
   const user = users.find((user) => user.id === id);
 
   if (!user) {
-    return response.status(404);
+    return response.status(404).json({ error: "User doesn't exists" });
   }
 
   request.user = user;
