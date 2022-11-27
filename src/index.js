@@ -45,10 +45,7 @@ function checksTodoExists(request, response, next) {
     return response.status(404);
   }
 
-  const validId =
-    /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.exec(
-      id
-    );
+  const validId = validate(id);
 
   if (!validId) {
     return response.status(400);
